@@ -25,18 +25,17 @@ public class Book {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Category category;
 
-
     public Book() {
     }
 
-    public Book(Long id, Status status, Integer stock_amount, Long sku, String image_url, String name, String description, Double price, Category category) {
+    public Book(Long id, String name, String description, Status status, Integer stock_amount, Long sku, String image_url, Double price, Category category) {
         this.id = id;
+        this.name = name;
+        this.description = description;
         this.status = status;
         this.stock_amount = stock_amount;
         this.sku = sku;
         this.image_url = image_url;
-        this.name = name;
-        this.description = description;
         this.price = price;
         this.category = category;
     }
@@ -47,6 +46,22 @@ public class Book {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Status getStatus() {
@@ -81,22 +96,6 @@ public class Book {
         this.image_url = image_url;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Double getPrice() {
         return price;
     }
@@ -112,5 +111,4 @@ public class Book {
     public void setCategory(Category category) {
         this.category = category;
     }
-
 }
