@@ -21,15 +21,19 @@ public class CategoryController {
         return categoryService.getAllCategories();
     }
 
-
     @GetMapping("/categories/names")
     public ResponseEntity<Object> getAllCategoryNames(){
-        return categoryService.getAllCategoriesNames();
+        return categoryService.getAllCategoryNames();
     }
 
     @PostMapping("/categories")
     public ResponseEntity<Object> createCategory(@Valid @RequestBody Category category){
         return categoryService.createCategory(category);
+    }
+
+    @PutMapping("/categories/{categoryID}/books/{bookID}")
+    ResponseEntity<Object> addBookToCategory(@PathVariable Long categoryID, @PathVariable Long bookID){
+        return categoryService.addBookToCategory(categoryID, bookID);
     }
 
     @PutMapping("/categories/{categoryID}")

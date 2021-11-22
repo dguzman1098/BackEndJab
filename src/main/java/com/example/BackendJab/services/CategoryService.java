@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Optional;
+
 
 @Service
 public class CategoryService {
@@ -23,7 +23,8 @@ public class CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
 
-
+    @Autowired
+    BookRepository bookRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(CategoryService.class);
 
@@ -36,17 +37,16 @@ public class CategoryService {
         return ResponseEntity.ok().body(categoryRepository.findAll());
     }
 
-    public ResponseEntity<Object> getAllCategoriesNames() {
+    public ResponseEntity<Object> getAllCategoryNames() {
         if(categoryRepository.findAll().isEmpty()){
             logger.info("No Categories Found");
         }
 
         logger.info("Category Names Found");
-        return ResponseEntity.ok().body(categoryRepository.findAllBookCategories());
+        return ResponseEntity.ok(categoryRepository.findAllCategoryNames());
     }
 
     public ResponseEntity<Object> createCategory(Category category) {
-
         logger.info("Category Created");
 
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -72,6 +72,13 @@ public class CategoryService {
         categoryRepository.deleteById(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<Object>  addBookToCategory(Long categoryID, Long bookID){
+        Category category = categoryRepository.findById(categoryID).get();
+        Book book = bookRepository.findById(bookID).get();
+        category.addBook(book);
+        return ResponseEntity.ok(categoryRepository.save(category));
     }
 
 

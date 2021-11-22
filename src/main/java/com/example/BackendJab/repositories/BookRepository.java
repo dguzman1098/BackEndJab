@@ -15,7 +15,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query(value = "SELECT * FROM BOOK WHERE CATEGORY_ID = ?1", nativeQuery = true)
     List<Book> findBooksByCategoryID(Long categoryID);
 
-    @Query(value = "SELECT b.name FROM Book b WHERE b.name LIKE %?1%")
-    List<Book> findBooksByName(@Param("name") String name);
+    @Query(value = "SELECT b.name FROM Book b WHERE b.name LIKE '%?1%'", nativeQuery = true)
+    List<Book> findBooksByName(String name);
 
 }

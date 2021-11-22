@@ -1,8 +1,9 @@
 package com.example.BackendJab.models;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -15,15 +16,7 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL) //one category, many books
-    private List<Book> books;
-
-    public Category() {
-    }
-
-    public Category(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    private List<Book> books = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -47,9 +40,13 @@ public class Category {
 
     public void setBooks(List<Book> books) {
         this.books = books;
-
-        for (Book b: books){
-            b.setCategory(this);
+        for(Book book: books){
+            book.setCategory(this);
         }
+
+    }
+
+    public void addBook(Book book){
+        books.add(book);
     }
 }

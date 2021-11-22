@@ -30,7 +30,6 @@ public class BookService {
         if(bookRepository.findAll().isEmpty()){
             logger.info("No Books Found");
         }
-
         return ResponseEntity.ok(bookRepository.findAll());
     }
 
@@ -76,6 +75,8 @@ public class BookService {
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+
 
 
 }
