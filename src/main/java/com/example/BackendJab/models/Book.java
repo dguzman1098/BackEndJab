@@ -20,25 +20,11 @@ public class Book {
     private String image_url;
     private Double price;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id")
+    @ManyToOne(cascade = CascadeType.ALL) //many books, to one category
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(name="category_id")
     private Category category;
 
-    public Book() {
-    }
-
-    public Book(Long id, String name, String description, Status status, Integer stock_amount, Long sku, String image_url, Double price, Category category) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.status = status;
-        this.stock_amount = stock_amount;
-        this.sku = sku;
-        this.image_url = image_url;
-        this.price = price;
-        this.category = category;
-    }
 
     public Long getId() {
         return id;
