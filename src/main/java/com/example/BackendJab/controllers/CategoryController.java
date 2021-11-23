@@ -37,8 +37,6 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getCategoryByBookId(Id));
     }
 
-
-
     @PostMapping("/categories")
     public ResponseEntity<Object> createCategory(@Valid @RequestBody Category category){
         return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.createCategory(category));
@@ -53,4 +51,5 @@ public class CategoryController {
     public void deleteCategory(@PathVariable Long categoryId){
         categoryService.deleteCategory(categoryId);
     }
+
 }

@@ -15,6 +15,4 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query(value = "SELECT * FROM CATEGORY", nativeQuery = true)
     List<String> findAllCategoryNames();
 
-
-
 }

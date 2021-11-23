@@ -37,9 +37,8 @@ public class CategoryService {
         if(bookRepository.findAll().isEmpty()){
             logger.info("No Books Found");
         }
-        Category category = categoryRepository.findById(Id).orElseThrow(null);
         logger.info("Found Category At Category ID");
-        return category;
+        return categoryRepository.findById(Id).orElseThrow(null);
     }
 
     public List<String> getAllCategoryNames() {
@@ -49,8 +48,6 @@ public class CategoryService {
         logger.info("Category Names Found");
         return categoryRepository.findAllCategoryNames();
     }
-
-
 
     public Category getCategoryByBookId(Long Id) {
         logger.info("Found Category At Book ID");

@@ -35,20 +35,17 @@ public class BookService {
             logger.info("No Books Found");
         }
         logger.info("Book By Id Found");
-        Book book = bookRepository.findById(Id).orElseThrow(null);
-        return book;
+        return bookRepository.findById(Id).orElseThrow(null);
     }
 
     public List<Book> getAllBooksByCategoryId(Long Id) {
-        List<Book> booksByCategory = bookRepository.getBooksByCategoryId(Id);
         logger.info("Found All Books by Category");
-        return booksByCategory;
+        return bookRepository.getBooksByCategoryId(Id);
     }
 
     public List<Book> getAllBooksByName(String name) {
-        List<Book> booksByName = bookRepository.findBooksByName(name);
         logger.info("Found Book By Name");
-        return booksByName;
+        return bookRepository.findBooksByName(name);
     }
 
     public Book createBook(Book book) {
