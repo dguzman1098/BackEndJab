@@ -14,7 +14,7 @@ public class Category {
     private String name;
 
     //Relationship is mapped by category
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")//one category, many books
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category", fetch=FetchType.LAZY)//one category, many books
     private List<Book> books;
 
     public Category() {
@@ -45,6 +45,6 @@ public class Category {
     }
 
     public void addBook(Book book){
-        books.add(book);
+        this.books.add(book);
     }
 }
