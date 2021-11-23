@@ -38,6 +38,7 @@ public class CategoryService {
             logger.info("No Books Found");
         }
         Category category = categoryRepository.findById(Id).orElseThrow(null);
+        logger.info("Found Category At Category ID");
         return category;
     }
 
@@ -47,6 +48,20 @@ public class CategoryService {
         }
         logger.info("Category Names Found");
         return categoryRepository.findAllCategoryNames();
+    }
+
+
+
+    public Category getCategoryByBookId(Long Id) {
+        logger.info("Found Category At Book ID");
+        Category category;
+        for (Book book: bookRepository.findAll()) {
+            if(book.getId().equals(Id)){
+                category = book.getCategory();
+                return category;
+            }
+        }
+        return null;
     }
 
     public Category createCategory(Category category) {
@@ -65,20 +80,4 @@ public class CategoryService {
         categoryRepository.deleteById(Id);
     }
 
-    public List<Category> getAllBooksByName(String name) {
-        List<Category> booksByName = categoryRepository.findBooksByName(name);
-        return booksByName;
-    }
-
-    public Category getCategoryByBookId(Long Id) {
-      logger.info("Found Category At Book ID");
-        Category category;
-        for (Book book: bookRepository.findAll()) {
-            if(book.getId().equals(Id)){
-                category = book.getCategory();
-                return category;
-            }
-        }
-        return null;
-    }
 }

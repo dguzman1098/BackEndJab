@@ -45,9 +45,16 @@ public class BookService {
         return booksByCategory;
     }
 
+    public List<Book> getAllBooksByName(String name) {
+        List<Book> booksByName = bookRepository.findBooksByName(name);
+        logger.info("Found Book By Name");
+        return booksByName;
+    }
+
     public Book createBook(Book book) {
-        //finds the category object in the category repository
+        //finds and gets the category object in the category repository by the books category id
         Category category = categoryRepository.findById(book.getCategory().getId()).get();
+        //sets category property in book to the category that was grabbed in the line above ^
         book.setCategory(category);
         logger.info("Book Created");
         return bookRepository.save(book);

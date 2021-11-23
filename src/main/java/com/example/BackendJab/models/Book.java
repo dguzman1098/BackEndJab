@@ -23,7 +23,7 @@ public class Book {
 
     @ManyToOne //many books, to one category
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //used to map property names with JSON keys during serialization and deserialization
-    @JoinColumn(name="category_id")
+    @JoinColumn(name="category_id", nullable = false)
     private Category category;
 
     public Book() {

@@ -37,10 +37,7 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getCategoryByBookId(Id));
     }
 
-    @GetMapping("/books/search/{name}")
-    public ResponseEntity<?> getBooksByName(String name){
-        return ResponseEntity.ok(categoryService.getAllBooksByName(name));
-    }
+
 
     @PostMapping("/categories")
     public ResponseEntity<Object> createCategory(@Valid @RequestBody Category category){

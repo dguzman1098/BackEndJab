@@ -31,6 +31,11 @@ public class BookController {
         return ResponseEntity.ok(bookService.getAllBooksByCategoryId(categoryId));
     }
 
+    @GetMapping("/books/categories/search")
+    public ResponseEntity<?> getBooksByName(@RequestParam("name")String name){
+        return ResponseEntity.ok(bookService.getAllBooksByName(name));
+    }
+
     @PostMapping("/books")
     public ResponseEntity<?> createBook(@Valid @RequestBody Book book){
         return ResponseEntity.status(HttpStatus.CREATED).body(bookService.createBook(book));
