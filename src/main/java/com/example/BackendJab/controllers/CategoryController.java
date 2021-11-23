@@ -4,6 +4,7 @@ package com.example.BackendJab.controllers;
 import com.example.BackendJab.models.Category;
 import com.example.BackendJab.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,31 +19,41 @@ public class CategoryController {
 
     @GetMapping("/categories")
     public ResponseEntity<Object> getAllCategories(){
-        return categoryService.getAllCategories();
+        return ResponseEntity.ok(categoryService.getAllCategories());
+    }
+
+    @GetMapping("/categories/{Id}")
+    public ResponseEntity<Object> getCategoryById(@PathVariable Long Id){
+        return ResponseEntity.ok(categoryService.getCategoryById(Id));
     }
 
     @GetMapping("/categories/names")
     public ResponseEntity<Object> getAllCategoryNames(){
-        return categoryService.getAllCategoryNames();
+        return ResponseEntity.ok(categoryService.getAllCategoryNames());
+    }
+
+    @GetMapping("categories/books/{Id}")
+    public ResponseEntity<Object> getCategoryByBookId(@PathVariable Long Id){
+        return ResponseEntity.ok(categoryService.getCategoryByBookId(Id));
+    }
+
+    @GetMapping("/books/search/{name}")
+    public ResponseEntity<?> getBooksByName(String name){
+        return ResponseEntity.ok(categoryService.getAllBooksByName(name));
     }
 
     @PostMapping("/categories")
     public ResponseEntity<Object> createCategory(@Valid @RequestBody Category category){
-        return categoryService.createCategory(category);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.createCategory(category));
     }
 
-    @PutMapping("/categories/{categoryID}/books/{bookID}")
-    ResponseEntity<Object> addBookToCategory(@PathVariable Long categoryID, @PathVariable Long bookID){
-        return categoryService.addBookToCategory(categoryID, bookID);
+    @PutMapping("/categories/{categoryId}")
+    public ResponseEntity<Object> updateCategory(@Valid @RequestBody Category category, @PathVariable Long categoryId){
+        return ResponseEntity.ok(categoryService.updateCategory(category, categoryId));
     }
 
-    @PutMapping("/categories/{categoryID}")
-    public ResponseEntity<Object> updateCategory(@Valid @RequestBody Category category, @PathVariable Long categoryID){
-        return categoryService.updateCategory(category, categoryID);
-    }
-
-    @DeleteMapping("/categories/{categoryID}")
-    public ResponseEntity<Object> deleteCategory(@PathVariable Long categoryID){
-        return categoryService.deleteCategory(categoryID);
+    @DeleteMapping("/categories/{categoryId}")
+    public void deleteCategory(@PathVariable Long categoryId){
+        categoryService.deleteCategory(categoryId);
     }
 }

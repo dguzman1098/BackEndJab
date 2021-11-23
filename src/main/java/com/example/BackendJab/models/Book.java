@@ -1,6 +1,7 @@
 package com.example.BackendJab.models;
 
 import com.example.BackendJab.models.enums.Status;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 
@@ -20,11 +21,13 @@ public class Book {
     private String image_url;
     private Double price;
 
-    @ManyToOne(cascade = CascadeType.ALL) //many books, to one category
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToOne //many books, to one category
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //used to map property names with JSON keys during serialization and deserialization
     @JoinColumn(name="category_id")
     private Category category;
 
+    public Book() {
+    }
 
     public Long getId() {
         return id;

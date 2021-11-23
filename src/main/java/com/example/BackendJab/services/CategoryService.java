@@ -8,15 +8,10 @@ import com.example.BackendJab.repositories.CategoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
-
 
 @Service
 public class CategoryService {
@@ -29,58 +24,61 @@ public class CategoryService {
 
     private static final Logger logger = LoggerFactory.getLogger(CategoryService.class);
 
-    public ResponseEntity<Object> getAllCategories() {
+    public List<Category> getAllCategories() {
         if(categoryRepository.findAll().isEmpty()){
             logger.info("No Categories Found");
         }
 
         logger.info("Categories Found");
-        return ResponseEntity.ok().body(categoryRepository.findAll());
+        return categoryRepository.findAll();
     }
 
-    public ResponseEntity<Object> getAllCategoryNames() {
+    public Category getCategoryById(Long Id) {
+        if(bookRepository.findAll().isEmpty()){
+            logger.info("No Books Found");
+        }
+        Category category = categoryRepository.findById(Id).orElseThrow(null);
+        return category;
+    }
+
+    public List<String> getAllCategoryNames() {
         if(categoryRepository.findAll().isEmpty()){
             logger.info("No Categories Found");
         }
-
         logger.info("Category Names Found");
-        return ResponseEntity.ok(categoryRepository.findAllCategoryNames());
+        return categoryRepository.findAllCategoryNames();
     }
 
-    public ResponseEntity<Object> createCategory(Category category) {
+    public Category createCategory(Category category) {
         logger.info("Category Created");
-
-        HttpHeaders responseHeaders = new HttpHeaders();
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(category.getId())
-                .toUri();
-        responseHeaders.setLocation(location);
-
-        return ResponseEntity.created(location).body(categoryRepository.save(category));
+        return categoryRepository.save(category);
 
     }
 
-    public ResponseEntity<Object> updateCategory(Category category, Long categoryID) {
+    public Category updateCategory(Category category, Long Id) {
         logger.info("Category Modified");
-        return ResponseEntity.ok().body(categoryRepository.save(category));
-
+        return categoryRepository.save(category);
     }
 
-    public ResponseEntity<Object> deleteCategory(Long id) {
+    public void deleteCategory(Long Id) {
         logger.info("Deleted Category");
-        categoryRepository.deleteById(id);
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        categoryRepository.deleteById(Id);
     }
 
-    public ResponseEntity<Object>  addBookToCategory(Long categoryID, Long bookID){
-        Category category = categoryRepository.findById(categoryID).get();
-        Book book = bookRepository.findById(bookID).get();
-        category.addBook(book);
-        return ResponseEntity.ok(categoryRepository.save(category));
+    public List<Category> getAllBooksByName(String name) {
+        List<Category> booksByName = categoryRepository.findBooksByName(name);
+        return booksByName;
     }
 
-
+    public Category getCategoryByBookId(Long Id) {
+      logger.info("Found Category At Book ID");
+        Category category;
+        for (Book book: bookRepository.findAll()) {
+            if(book.getId().equals(Id)){
+                category = book.getCategory();
+                return category;
+            }
+        }
+        return null;
+    }
 }

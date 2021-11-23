@@ -1,20 +1,15 @@
 package com.example.BackendJab.services;
 
 import com.example.BackendJab.models.Book;
+import com.example.BackendJab.models.Category;
 import com.example.BackendJab.repositories.BookRepository;
 import com.example.BackendJab.repositories.CategoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookService {
@@ -23,60 +18,49 @@ public class BookService {
     @Autowired
     BookRepository bookRepository;
 
+    @Autowired
+    CategoryRepository categoryRepository;
+
     private static final Logger logger = LoggerFactory.getLogger(BookService.class);
 
-
-    public ResponseEntity<Object> getAllBooks() {
+    public List<Book> getAllBooks() {
         if(bookRepository.findAll().isEmpty()){
             logger.info("No Books Found");
         }
-        return ResponseEntity.ok(bookRepository.findAll());
+        return bookRepository.findAll();
     }
 
-    public ResponseEntity<Object> getAllBooksByCategory(Long categoryID) {
-        List<Book> booksByCategory = bookRepository.findBooksByCategoryID(categoryID);
-        return ResponseEntity.ok().body(booksByCategory);
-    }
-
-    public ResponseEntity<Object> getAllBooksByName(String name) {
-        List<Book> booksByName = bookRepository.findBooksByName(name);
-        return  ResponseEntity.ok(booksByName);
-    }
-
-
-    public ResponseEntity<Object> createBook(Book book) {
-        HttpHeaders responseHeaders = new HttpHeaders();
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(book.getId())
-                .toUri();
-        responseHeaders.setLocation(location);
-
-        bookRepository.save(book);
-        logger.info("Book Created");
-        return new ResponseEntity<>(null,responseHeaders, HttpStatus.CREATED);
-
-    }
-
-
-    public ResponseEntity<Object> updateBook(Book book, Long bookID) {
-        logger.info("Book Successfully Modified");
-        return ResponseEntity.ok(bookRepository.save(book));
-
-    }
-
-    public ResponseEntity<Object> deleteBook(Long bookID) {
-        if (bookRepository.findById(bookID).isEmpty()) {
-            logger.info("Unable to Delete Book");
+    public Book getBookById(Long Id) {
+        if(bookRepository.findAll().isEmpty()){
+            logger.info("No Books Found");
         }
-        logger.info("Deleted Book");
-        bookRepository.deleteById(bookID);
-
-        return ResponseEntity.ok(HttpStatus.OK);
+        logger.info("Book By Id Found");
+        Book book = bookRepository.findById(Id).orElseThrow(null);
+        return book;
     }
 
+    public List<Book> getAllBooksByCategoryId(Long Id) {
+        List<Book> booksByCategory = bookRepository.getBooksByCategoryId(Id);
+        logger.info("Found All Books by Category");
+        return booksByCategory;
+    }
 
+    public Book createBook(Book book) {
+        //finds the category object in the category repository
+        Category category = categoryRepository.findById(book.getCategory().getId()).get();
+        book.setCategory(category);
+        logger.info("Book Created");
+        return bookRepository.save(book);
+    }
 
+    public Book updateBook(Book book, Long Id) {
+        logger.info("Book Updated");
+        return bookRepository.save(book);
+    }
+
+    public void deleteBook(Long Id) {
+        logger.info("Deleted Book");
+        bookRepository.deleteById(Id);
+    }
 
 }
