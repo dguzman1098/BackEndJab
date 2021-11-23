@@ -1,6 +1,7 @@
 package com.example.BackendJab.repositories;
 
 import com.example.BackendJab.models.Book;
+import com.example.BackendJab.models.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,9 +14,11 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
 
     @Query(value = "SELECT * FROM BOOK WHERE CATEGORY_ID = ?1", nativeQuery = true)
-    List<Book> findBooksByCategoryID(Long categoryID);
+    List<Book> getBooksByCategoryId(Long categoryId);
 
-    @Query(value = "SELECT b.name FROM Book b WHERE b.name LIKE '%?1%'", nativeQuery = true)
-    List<Book> findBooksByName(String name);
+
+
+
+
 
 }

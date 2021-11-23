@@ -1,9 +1,7 @@
 package com.example.BackendJab.models;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 
 @Entity
@@ -15,8 +13,12 @@ public class Category {
 
     private String name;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL) //one category, many books
-    private List<Book> books = new ArrayList<>();
+    //Relationship is mapped by category
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")//one category, many books
+    private List<Book> books;
+
+    public Category() {
+    }
 
     public Long getId() {
         return id;
@@ -40,10 +42,6 @@ public class Category {
 
     public void setBooks(List<Book> books) {
         this.books = books;
-        for(Book book: books){
-            book.setCategory(this);
-        }
-
     }
 
     public void addBook(Book book){
